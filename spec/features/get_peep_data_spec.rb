@@ -1,11 +1,4 @@
 describe 'Getting peeps' do
-
-  before(:all) do
-    user = create(:user)
-    create(:peep, user: user)
-    create(:peep, user: user)
-  end
-
   it 'allows user to get peeps' do
     get '/peeps'
     expect_json_types('*', :array_of_objects)
@@ -14,6 +7,7 @@ describe 'Getting peeps' do
 
   it 'allows user to get specific peep' do
     get '/peeps/2'
+    expect_status(200)
     expect_json(id: 2)
   end
 

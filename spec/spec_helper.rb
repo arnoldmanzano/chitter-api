@@ -9,9 +9,9 @@ require 'airborne'
 require 'database_cleaner'
 require 'factory_girl'
 require './spec/factories'
+require './spec/features/test_helpers'
 
 # Capybara.app = ChitterApi
-
 Airborne.configure do |config|
   config.rack_app = ChitterApi
 end
@@ -19,6 +19,7 @@ end
 RSpec.configure do |config|
   # config.include Capybara::DSL
   config.include FactoryGirl::Syntax::Methods
+  config.include TestHelpers
 
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
@@ -31,13 +32,11 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before(:each) do
     DatabaseCleaner.start
+    TestHelpers.fill_database
   end
 
-  config.after(:each) do
+  config.after(:suite) do
     DatabaseCleaner.clean
   end
 end
