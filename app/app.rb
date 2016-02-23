@@ -1,8 +1,6 @@
 ENV['RACK_ENV'] ||= 'development'
 
 require 'sinatra/base'
-# require 'json'
-# require 'dm-serializer'
 require_relative 'data_mapper_setup'
 
 class ChitterApi < Sinatra::Base
@@ -39,6 +37,20 @@ class ChitterApi < Sinatra::Base
     user = User.get(params[:id])
     return status 404 if user.nil?
     user.to_json
+  end
+
+  post '/users' do
+    @user = User.new(
+      username: params[:username],
+      email: params[:email],
+      name: params[:name],
+      password: params[:password],
+      password_confirmation: params[:password_confirmation])
+    if @user.save
+      return status 201
+    else
+      return status 500
+    end
   end
 
   run! if app_file == $PROGRAM_NAME
