@@ -1,4 +1,4 @@
-describe 'Getting users' do
+describe 'Get / reading users' do
   it 'allows API user to get users' do
     get '/users'
     expect_json_types('*', :array_of_objects)

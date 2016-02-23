@@ -27,6 +27,15 @@ class ChitterApi < Sinatra::Base
     user.peeps.to_json
   end
 
+  post '/peeps' do
+    user = User.get(params[:user_id])
+    return status 500 if user.nil?
+    user.peeps.create(
+      message: params[:message],
+      datetime: Time.now)
+    return status 201
+  end
+
   get '/users' do
     content_type :json
     User.all.to_json(exclude: [:password_digest])
@@ -40,13 +49,13 @@ class ChitterApi < Sinatra::Base
   end
 
   post '/users' do
-    @user = User.new(
+    user = User.new(
       username: params[:username],
       email: params[:email],
       name: params[:name],
       password: params[:password],
       password_confirmation: params[:password_confirmation])
-    if @user.save
+    if user.save
       return status 201
     else
       return status 500

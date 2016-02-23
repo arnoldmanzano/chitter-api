@@ -1,4 +1,4 @@
-describe 'Getting peeps' do
+describe 'Get / reading peeps' do
   it 'allows API user to get peeps' do
     get '/peeps'
     expect_json_types('*', :array_of_objects)
