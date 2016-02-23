@@ -8,5 +8,10 @@ class ChitterApi < Sinatra::Base
     'Hello ChitterApi!'
   end
 
+  get '/peeps' do
+    content_type :json
+    Peep.all.to_json
+  end
+
   run! if app_file == $PROGRAM_NAME
 end
