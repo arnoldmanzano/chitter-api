@@ -7,6 +7,7 @@ describe 'Getting users' do
 
   it 'allows API user to get specific user' do
     get '/users/2'
+    expect_status(200)
     expect_json(id: 2)
   end
 

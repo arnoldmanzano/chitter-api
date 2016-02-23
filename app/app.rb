@@ -22,6 +22,13 @@ class ChitterApi < Sinatra::Base
     peep.to_json
   end
 
+  get '/peeps/user/:id' do
+    content_type :json
+    user = User.get(params[:id])
+    return status 404 if user.nil? || user.peeps.nil?
+    user.peeps.to_json
+  end
+
   get '/users' do
     content_type :json
     User.all.to_json(exclude: [:password_digest])
